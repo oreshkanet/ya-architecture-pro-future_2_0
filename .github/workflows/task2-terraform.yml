@@ -72,6 +72,8 @@ jobs:
         run: terraform plan -no-color -var-file=${{ matrix.env }}.tfvars
         env:
           YC_TOKEN: ${{ secrets.YC_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.TF_STATE_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_STATE_SECRET_KEY }}
 
   apply:
     name: terraform apply (manual)
@@ -110,4 +112,6 @@ jobs:
         run: terraform apply -auto-approve -var-file=${{ inputs.environment }}.tfvars
         env:
           YC_TOKEN: ${{ secrets.YC_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.TF_STATE_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_STATE_SECRET_KEY }}
 
