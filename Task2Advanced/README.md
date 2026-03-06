@@ -1,10 +1,20 @@
 # Задание 2. Интеграция с CI/CD и удалённым хранением состояния
 
-В этой директории лежит Terraform-код с **удалённым состоянием** в S3-compatible хранилище (MinIO / Yandex Object Storage / AWS S3) и пример CI/CD через **GitHub Actions**:
+## Подготовка облака
 
-- `terraform init` (c S3 backend)
-- `terraform plan`
-- `terraform apply` — **только вручную** (workflow_dispatch) + можно включить approvals через GitHub Environments
+Создан сервисный пользователь svc-devops с правами управления ресурсами:
+
+![cloud_1](./asset/cloud_1.png)
+
+Статические ключи для доступа к S3: 
+
+![cloud_2](./asset/cloud_2.png)
+
+Бакет в S3:
+
+![cloud_3](./asset/cloud_3.png)
+
+---
 
 ## Структура
 
@@ -14,12 +24,10 @@ Task2Advanced/
 │   └── vm/
 │       ├── main.tf
 │       ├── variables.tf
-│       ├── outputs.tf
-│       └── README.md
+│       └── outputs.tf
 └── envs/
     ├── dev/
     │   ├── backend.tf
-    │   ├── backend.hcl.example
     │   ├── main.tf
     │   ├── variables.tf
     │   ├── outputs.tf
@@ -30,7 +38,7 @@ Task2Advanced/
         └── ...
 ```
 
-## Backend: S3-compatible remote state
+## Backend: S3 удалённое хранение
 
 В каждом окружении есть `backend.tf`:
 
@@ -45,28 +53,6 @@ terraform {
 - **не хранить секреты** (access_key/secret_key) в репозитории;
 - легко переключать MinIO/Yandex Object Storage/AWS S3.
 
-### Локальный запуск (пример)
-
-1) Экспортируйте ключи доступа к S3-хранилищу (MinIO / Object Storage):
-
-```bash
-export AWS_ACCESS_KEY_ID="***"
-export AWS_SECRET_ACCESS_KEY="***"
-```
-
-2) Инициализируйте backend в выбранном окружении, используя пример `backend.hcl.example`:
-
-```bash
-cd envs/dev
-cp backend.hcl.example backend.hcl
-
-terraform init -backend-config=backend.hcl
-terraform plan -var-file=dev.tfvars
-terraform apply -var-file=dev.tfvars
-```
-
-Файл `backend.hcl` **не коммитьте** (оставьте локально); в репозитории хранится только `backend.hcl.example`.
-
 ## Аутентификация Yandex Cloud
 
 Для провайдера `yandex-cloud/yandex` нужен IAM-токен (или key-файл сервисного аккаунта). Самый простой вариант — токен:
@@ -75,7 +61,7 @@ terraform apply -var-file=dev.tfvars
 export YC_TOKEN="$(yc iam create-token)"
 ```
 
-Если используете сервисный аккаунт:
+Используется сервисный аккаунт:
 
 ```bash
 export YC_TOKEN="$(yc iam create-token --impersonate-service-account-id aje5ipm4g7ue455enpnc)"
@@ -88,7 +74,6 @@ Workflow: `.github/workflows/task2-terraform.yml`
 ### Что делает pipeline
 
 - **На PR и push** (изменения в `Task2Advanced/**`):
-  - `terraform fmt -check`
   - `terraform init` (S3 backend, параметры из секретов)
   - `terraform validate`
   - `terraform plan` для `dev`, `stage`, `prod`
@@ -97,9 +82,10 @@ Workflow: `.github/workflows/task2-terraform.yml`
   - параметр `environment` выбирается из `dev|stage|prod`
   - state ключ: `task2/<env>/terraform.tfstate`
 
+
 ### Секреты/переменные, которые нужны в репозитории
 
-Добавьте в GitHub Secrets:
+В GitHub Secrets нужно добавить:
 
 - `YC_TOKEN` — IAM token для Yandex Cloud
 - `TF_STATE_BUCKET` — bucket для state
@@ -108,19 +94,24 @@ Workflow: `.github/workflows/task2-terraform.yml`
 - `TF_STATE_ACCESS_KEY` — access key
 - `TF_STATE_SECRET_KEY` — secret key
 
-### Approvals для apply (рекомендовано)
+![github_1](./asset/github_1.png)
 
-Workflow использует `environment: task2-<env>`. В GitHub можно создать environments:
+### Workflow для plan
 
-- `task2-dev`
-- `task2-stage`
-- `task2-prod`
+![actions_1](./asset/actions_1.png)
 
-и включить для них **Required reviewers** — тогда `apply` будет выполняться только после подтверждения.
+![actions_2](./asset/actions_2.png)
 
-## Требования безопасности (что проверяет ревьюер)
+### Workflow для apply
 
-- **State не хранится локально**: используется `backend "s3"` и `terraform init` с удалённым хранилищем.
-- **Секреты не в коде**: ключи S3 и `YC_TOKEN` передаются через secrets/переменные окружения.
-- **Изоляция окружений**: раздельные ключи state (`task2/dev|stage|prod/...`) и раздельные `.tfvars`.
+![workflow_1](./asset/workflow_1.png)
 
+![workflow_2](./asset/workflow_2.png)
+
+![workflow_3](./asset/workflow_3.png)
+
+![workflow_4](./asset/workflow_4.png)
+
+![workflow_5](./asset/workflow_5.png)
+
+> https://github.com/oreshkanet/ya-architecture-pro-future_2_0/actions/runs/22771691033
