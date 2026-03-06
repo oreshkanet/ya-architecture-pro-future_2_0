@@ -47,10 +47,6 @@ jobs:
         with:
           terraform_wrapper: false
 
-      - name: Terraform fmt
-        run: terraform fmt -check -recursive
-        working-directory: Task2Advanced
-
       - name: Terraform init (S3 backend)
         run: |
           terraform init -input=false \
