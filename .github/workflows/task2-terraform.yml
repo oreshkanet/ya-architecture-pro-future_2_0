@@ -6,7 +6,7 @@ on:
       - "Task2Advanced/**"
       - ".github/workflows/task2-terraform.yml"
   push:
-    branches: ["feature_2_0"]
+    branches: ["main", "feature_2_0"]
     paths:
       - "Task2Advanced/**"
       - ".github/workflows/task2-terraform.yml"
