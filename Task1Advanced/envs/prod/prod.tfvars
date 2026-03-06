@@ -1,9 +1,9 @@
-name           = "vm-prod"
-cores          = 4
-ram            = 8
-disk_size      = 100
-disk_type      = "network-ssd"
-nat            = false
+name      = "vm-prod"
+cores     = 4
+ram       = 8
+disk_size = 100
+disk_type = "network-ssd"
+nat       = false
 
 folder_id      = "b1g7ac2sm6p1t8s4jnmj"
 zone_id        = "ru-central1-a"

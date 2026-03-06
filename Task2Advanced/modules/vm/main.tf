@@ -9,19 +9,19 @@ terraform {
 
 # Подключаемый диск (отдельный ресурс)
 resource "yandex_compute_disk" "attached" {
-  name     = "${var.name}-disk"
-  type  = var.disk_type
-  zone  = var.zone_id
+  name      = "${var.name}-disk"
+  type      = var.disk_type
+  zone      = var.zone_id
   folder_id = var.folder_id
-  size     = var.disk_size
-  labels   = var.labels
+  size      = var.disk_size
+  labels    = var.labels
 }
 
 # Виртуальная машина
 resource "yandex_compute_instance" "vm" {
   name        = var.name
   folder_id   = var.folder_id
-  zone     = var.zone_id
+  zone        = var.zone_id
   platform_id = var.platform_id
   labels      = var.labels
 

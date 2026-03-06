@@ -1,9 +1,9 @@
-name           = "vm-dev"
-cores          = 2
-ram            = 2
-disk_size      = 20
-disk_type      = "network-hdd"
-nat            = true
+name      = "vm-dev"
+cores     = 2
+ram       = 2
+disk_size = 20
+disk_type = "network-hdd"
+nat       = true
 
 folder_id      = "b1g0a23pg0uiohgur5ke"
 zone_id        = "ru-central1-a"

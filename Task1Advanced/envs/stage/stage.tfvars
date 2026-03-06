@@ -1,9 +1,9 @@
-name           = "vm-stage"
-cores          = 4
-ram            = 4
-disk_size      = 50
-disk_type      = "network-ssd"
-nat            = true
+name      = "vm-stage"
+cores     = 4
+ram       = 4
+disk_size = 50
+disk_type = "network-ssd"
+nat       = true
 
 folder_id      = "b1gnrv39fgcls3phb000"
 zone_id        = "ru-central1-a"
