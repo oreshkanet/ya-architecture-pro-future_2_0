@@ -35,7 +35,7 @@ resource "yandex_compute_instance" "vm" {
     initialize_params {
       image_id = var.image_id
       size     = 20
-      type  = "network-hdd"
+      type     = "network-hdd"
     }
   }
 
