@@ -1,6 +1,6 @@
 # Задание 2. Интеграция с CI/CD и удалённым хранением состояния
 
-## Подготовка облака
+## 1. Подготовка облака
 
 Создан сервисный пользователь svc-devops с правами управления ресурсами:
 
@@ -16,7 +16,7 @@
 
 ---
 
-## Структура
+## 2. Структура
 
 ```
 Task2Advanced/
@@ -38,7 +38,9 @@ Task2Advanced/
         └── ...
 ```
 
-## Backend: S3 удалённое хранение
+---
+
+## 3. Backend: S3 удалённое хранение
 
 В каждом окружении есть `backend.tf`:
 
@@ -53,7 +55,9 @@ terraform {
 - **не хранить секреты** (access_key/secret_key) в репозитории;
 - легко переключать MinIO/Yandex Object Storage/AWS S3.
 
-## Аутентификация Yandex Cloud
+---
+
+## 4. Аутентификация Yandex Cloud
 
 Для провайдера `yandex-cloud/yandex` нужен IAM-токен (или key-файл сервисного аккаунта). Самый простой вариант — токен:
 
@@ -67,7 +71,9 @@ export YC_TOKEN="$(yc iam create-token)"
 export YC_TOKEN="$(yc iam create-token --impersonate-service-account-id aje5ipm4g7ue455enpnc)"
 ```
 
-## CI/CD (GitHub Actions)
+---
+
+## 5. CI/CD (GitHub Actions)
 
 Workflow: `.github/workflows/task2-terraform.yml`
 
@@ -83,7 +89,7 @@ Workflow: `.github/workflows/task2-terraform.yml`
   - state ключ: `task2/<env>/terraform.tfstate`
 
 
-### Секреты/переменные, которые нужны в репозитории
+### 5.1. Секреты/переменные, которые нужны в репозитории
 
 В GitHub Secrets нужно добавить:
 
@@ -96,13 +102,13 @@ Workflow: `.github/workflows/task2-terraform.yml`
 
 ![github_1](./asset/github_1.png)
 
-### Workflow для plan
+### 5.2. Workflow для plan
 
 ![actions_1](./asset/actions_1.png)
 
 ![actions_2](./asset/actions_2.png)
 
-### Workflow для apply
+### 5.3. Workflow для apply
 
 ![workflow_1](./asset/workflow_1.png)
 
@@ -115,3 +121,5 @@ Workflow: `.github/workflows/task2-terraform.yml`
 ![workflow_5](./asset/workflow_5.png)
 
 > https://github.com/oreshkanet/ya-architecture-pro-future_2_0/actions/runs/22771691033
+
+---
