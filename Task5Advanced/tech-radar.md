@@ -63,3 +63,6 @@
 
 ## 5. Визуализация радара
 
+![techradar_1](./asset/techradar_1.png)
+![techradar_2](./asset/techradar_2.png)
+![techradar_3](./asset/techradar_3.png)

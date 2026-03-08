@@ -4,3 +4,6 @@ tmp
 .terraform.lock.hcl
 backend.hcl
 *.drawio.bkp
+node_modules
+.techradar
+package-lock.json
