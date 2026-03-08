@@ -1,0 +1,9 @@
+.DS_Store
+tmp
+.terraform
+.terraform.lock.hcl
+backend.hcl
+*.drawio.bkp
+node_modules
+.techradar
+package-lock.json
