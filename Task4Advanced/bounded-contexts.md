@@ -4,32 +4,40 @@
 flowchart TB
     subgraph clinical ["Домен Клиник"]
         PM["`Patient Management
+            -
             Управление пациентами`"]
         CS["`Clinical Operations
+            -
             Операционная деятельность клиник`"]
     end
 
     subgraph fintech ["Финтех-домен"]
         AC["`Accounts & Credits
+            -
             Счета и кредиты`"]
         PY["`Payments
+            -
             Платежи`"]
     end
 
     subgraph ai_domain ["Домен ИИ"]
         AI["`AI & Research
+            -
             ИИ и исследования`"]
     end
 
     subgraph analytics ["Аналитика"]
         DM["`Data Mart
+            -
             Витрина данных`"]
     end
 
     subgraph partners ["Партнёры (будущее)"]
         PH["`Pharma
+            -
             Фармацевтические компании`"]
         SU["`Suppliers
+            -
             Поставщики медицинского оборудования`"]
     end
 
